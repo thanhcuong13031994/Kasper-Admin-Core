@@ -23,6 +23,7 @@ export class LoginComponent {
         Validators.compose([
           Validators.required,
           Validators.minLength(6),
+          Validators.pattern(/^[a-z]{6,32}$/i),
         ]),
       ],
       password: [

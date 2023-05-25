@@ -1,6 +1,6 @@
 <form class="form-login" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
   <h1 class="form-login__title">Welcome to Panorama,<br>Sign In to Continue</h1>
-  <div class="form-login__create">Don't have an account? <a [routerLink]="['create-account']">Create a account</a><br>It takes less than a minute.</div>
+  <div class="form-login__create">Don't have an account? <a [routerLink]="['/auth/create-account']">Create a account</a><br>It takes less than a minute.</div>
   <div class="form-login__alert" *ngIf="loginIncorrect">The login detail is incorrect</div>
   <div class="form-login__content">
     <div class="form-login__group">
