@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './modules/auth/auth.component';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
           import("./modules/auth/auth.module").then(
             m => m.AuthModule
           )
+      },
+      {
+        path: "dashboard",
+        component: DashboardComponent
       }
     ]
   }

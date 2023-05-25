@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../service/auth.service';
+import { Credential } from '../../service/credential.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +14,9 @@ export class LoginComponent {
   public faEye = faEye;
   public faEyeSlash = faEyeSlash;
   public isShowPsw: boolean = false;
+  public loginIncorrect: boolean = false;
   signInForm: FormGroup;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private credential: Credential, private rorte: ActivatedRoute, private router: Router) {
     this.signInForm = this.fb.group({
       username: [
         '',
@@ -35,6 +39,20 @@ export class LoginComponent {
   }
   onSubmit(): void {
     console.log(this.signInForm);
+    const controls = this.signInForm.controls;
+    const authData = {
+      username: controls['username'].value,
+      password: controls['password'].value,
+    }
+    this.credential.setUserName(authData.username);
+    this.authService.login(authData).pipe().subscribe(res => {
+      console.log(res);
+      if(!res) {
+        this.loginIncorrect = true;
+        return;
+      };
+      this.router.navigate(['/dashboard']);
+    });
   }
   hanhleShowPsw(){
     this.isShowPsw = !this.isShowPsw;
