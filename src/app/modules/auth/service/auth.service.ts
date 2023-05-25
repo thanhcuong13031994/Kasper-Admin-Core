@@ -35,8 +35,6 @@ export class AuthService {
   }
 
   public login(authData: any): Observable<any> {
-    return of(this.checkLogin(authData)).pipe(
-      delay(300)
-    );
+    return of(this.checkLogin(authData));
   }
 }

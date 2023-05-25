@@ -1,22 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../service/auth.service';
 import { Credential } from '../../service/credential.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store, select } from '@ngrx/store';
+import { LoginAction } from '../../action/auth.action';
+import { selectIsLogin } from '../../selector/auth.selector';
+import { Subject, skip, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   public faEye = faEye;
   public faEyeSlash = faEyeSlash;
   public isShowPsw: boolean = false;
   public loginIncorrect: boolean = false;
   signInForm: FormGroup;
-  constructor(private fb: FormBuilder, private authService: AuthService, private credential: Credential, private rorte: ActivatedRoute, private router: Router) {
+  destroy$: Subject<boolean>;
+  constructor(private fb: FormBuilder, private authService: AuthService, private credential: Credential, private rorte: ActivatedRoute, private router: Router, private store: Store<any>) {
+    this.destroy$ = new Subject();
     this.signInForm = this.fb.group({
       username: [
         '',
@@ -37,6 +43,17 @@ export class LoginComponent {
     });
   }
   ngOnInit(): void {
+    this.store.pipe(select(selectIsLogin()), takeUntil(this.destroy$), skip(1)).subscribe(res => {
+      if(!res) {
+        this.loginIncorrect = true;
+        return;
+      };
+      this.router.navigate(['/dashboard']);
+    });
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
   onSubmit(): void {
     console.log(this.signInForm);
@@ -46,14 +63,16 @@ export class LoginComponent {
       password: controls['password'].value,
     }
     this.credential.setUserName(authData.username);
-    this.authService.login(authData).pipe().subscribe(res => {
-      console.log(res);
-      if(!res) {
-        this.loginIncorrect = true;
-        return;
-      };
-      this.router.navigate(['/dashboard']);
-    });
+    // this.authService.login(authData).pipe().subscribe(res => {
+    //   // console.log(res);
+    //   if(!res) {
+    //     this.loginIncorrect = true;
+    //     return;
+    //   };
+    //   this.router.navigate(['/dashboard']);
+    // });
+
+    this.store.dispatch(new LoginAction(authData));
   }
   hanhleShowPsw(){
     this.isShowPsw = !this.isShowPsw;

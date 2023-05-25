@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './modules/auth/auth.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -15,6 +18,10 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot(reducers, {
+      metaReducers
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
