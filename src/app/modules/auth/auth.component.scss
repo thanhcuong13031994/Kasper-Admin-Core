@@ -1,0 +1,38 @@
+.kasper-container {
+  max-width: 1000px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+.kasper-mainvisual {
+  display: flex;
+  align-items: center;
+  @media (max-width: 767px) {
+    height: 100vh;
+  }
+  &__img{
+    width: 40%;
+    height: calc(100vh - 20px);
+    background-image: url('/assets/imgs/main-visual.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    img {
+      display: none;
+    }
+    @media (max-width: 767px) {
+      display: none;
+    }
+  }
+  &__login{
+    width: 60%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @media (max-width: 767px) {
+      width: 100%;
+      padding: 0;
+    }
+  }
+
+}
