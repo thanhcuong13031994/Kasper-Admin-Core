@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loginIncorrect = true;
         return;
       };
+      this.loginIncorrect = false;
       this.router.navigate(['/dashboard']);
     });
   }

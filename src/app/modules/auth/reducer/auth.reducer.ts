@@ -22,7 +22,7 @@ export function authReducers(
         isLogin: false,
       };
     case AuthActionTypes.LOGIN_SUCCESS:
-      console.log('AuthActionTypes.LOGIN_SUCCESS',state.isLogin);
+      console.log('AuthActionTypes.LOGIN_SUCCESS',action.isLogin);
       return {
         ...state,
         isLogin: action.isLogin,
